@@ -105,20 +105,35 @@ class ProcessParkData:
 			writer.writerow(header)
 				
 			natParkCache = self.getNationalParkCache()
+			totalCampers = {}
 			for natPark in natParkCache:
 				parkName = natPark.getName()
 				backcountryCampers = natPark.getBackcountryCampers()
 				
 				for date in allDates:
 					if date not in backcountryCampers:
-						backcountryCampers[date] = -1
+						backcountryCampers[date] = 0
 				
 				if len(backcountryCampers) == len(allDates):
 					dateVals = []
 					for key, val in sorted(backcountryCampers.iteritems()):
 						dateVals.append(val)
+						
+						if len(totalCampers) < len(dateVals):
+							totalCampers[key] = 0
+							totalCampers[key] = int(str(totalCampers[key]).replace(",", "")) + int(str(val).replace(",", "")) 
+							print "adding ", key
+						else:
+							print totalCampers[key]
+							totalCampers[key] = int(str(totalCampers[key]).replace(",", "")) + int(str(val).replace(",", ""))
+
 					writer.writerow([parkName] + dateVals)
 					
+			summedDateVals = []			
+			for key, val in sorted(totalCampers.iteritems()):
+				summedDateVals.append(val)		
+			writer.writerow(["Combined"] + summedDateVals)
+				
 
 
 if __name__ == '__main__':
