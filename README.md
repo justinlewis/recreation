@@ -1,5 +1,5 @@
 
-This repo seeks to compile data processing and visualization tools for recreation related information. Data will inherintly find it's way here as well although the goal is not to compile and store lots of data here. 
+This repo seeks to compile data processing and visualization tools for recreation related information. Data will inherintly find it's way here as well although the goal is not to compile and store lots of data. 
 
 ## National Parks:
 
