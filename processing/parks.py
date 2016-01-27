@@ -4,18 +4,18 @@ from os.path import isfile, join
 class Park(object):
 	def __init__(self, name):
 		self.name = name
-		self.backcountryCampers = {}
+		self.campers = {}
 	
 	def getName(self):
 		return self.name	
 		
-	def getBackcountryCampers(self):
-		return self.backcountryCampers
+	def getCampers(self):
+		return self.campers
 		
-	def updateBackcountryCampers(self, year, totalBackcountryCampers):
-		backcountryCampers = self.getBackcountryCampers()
-		backcountryCampers[year] = totalBackcountryCampers
-		#print self.getName(), backcountryCampers
+	def updateCampers(self, year, totalCampers):
+		campers = self.getCampers()
+		campers[year] = totalCampers
+		#print self.getName(), campers
 		
 
 class NationalPark(Park):
@@ -29,12 +29,19 @@ class ProcessParkData:
 		print "starting process"
 		print 
 		
-		dataDirPath = "../data/national_parks/"
-		destFilePath = join(dataDirPath, "processed/backcountry_campers_combined.csv")
+		backcountryDataDirPath = "../data/national_parks/raw/backcountry_campers"
+		backcountryDestFilePath = "../data/national_parks/processed/backcountry_campers_combined.csv"
+		
+		tentDataDirPath = "../data/national_parks/raw/tent_campers"
+		tentDestFilePath = "../data/national_parks/processed/tent_campers_combined.csv"
+		
 		self.nationalParkCache = []
 		
-		self.getFiles(dataDirPath)
-		self.writeCombinedFile(destFilePath)
+		self.getFiles(backcountryDataDirPath)
+		self.writeCombinedFile(backcountryDestFilePath)
+		
+		self.getFiles(tentDataDirPath)
+		self.writeCombinedFile(tentDestFilePath)
 	
 	def getNationalParkCache(self):
 		return self.nationalParkCache
@@ -58,13 +65,13 @@ class ProcessParkData:
 		natParkCache = self.getNationalParkCache()
 		for natPark in natParkCache:
 			parkName = natPark.getName()
-			backcountryCampers = natPark.getBackcountryCampers()
-			if len(backcountryCampers) > longestLen:
-				longestLen = len(backcountryCampers)
+			campers = natPark.getCampers()
+			if len(campers) > longestLen:
+				longestLen = len(campers)
 				longest = natPark
 		
-		backcountryCampers = longest.getBackcountryCampers()
-		for key, val in sorted(backcountryCampers.iteritems()):
+		campers = longest.getCampers()
+		for key, val in sorted(campers.iteritems()):
 			dates.append(key)
 		return dates
 	
@@ -84,8 +91,8 @@ class ProcessParkData:
 					#print ', '.join(row)
 					parkName = row[1]
 					parkRanking = row[2]
-					totalBackcountryCampers = row[3]
-					percentBackcountryCampers = row[4]
+					totalCampers = row[3]
+					percentCampers = row[4]
 							
 					containsPark = self.cacheContainsPark(parkName)
 					if containsPark == False:
@@ -93,7 +100,7 @@ class ProcessParkData:
 						natParkCache.append(NationalPark(parkName))
 						
 					thisNatPark = self.getFromNationalParkCache(parkName)
-					thisNatPark.updateBackcountryCampers(year, totalBackcountryCampers)
+					thisNatPark.updateCampers(year, totalCampers)
 		
 					
 	def writeCombinedFile(self, theFile):
@@ -108,25 +115,25 @@ class ProcessParkData:
 			totalCampers = {}
 			for natPark in natParkCache:
 				parkName = natPark.getName()
-				backcountryCampers = natPark.getBackcountryCampers()
+				campers = natPark.getCampers()
 				
 				for date in allDates:
-					if date not in backcountryCampers:
-						backcountryCampers[date] = 0
+					if date not in campers:
+						campers[date] = 0
 				
-				if len(backcountryCampers) == len(allDates):
+				if len(campers) == len(allDates):
 					dateVals = []
-					for key, val in sorted(backcountryCampers.iteritems()):
+					for key, val in sorted(campers.iteritems()):
 						dateVals.append(val)
 						
 						if len(totalCampers) < len(dateVals):
 							totalCampers[key] = 0
 							totalCampers[key] = int(str(totalCampers[key]).replace(",", "")) + int(str(val).replace(",", "")) 
-							print "adding ", key
 						else:
 							print totalCampers[key]
 							totalCampers[key] = int(str(totalCampers[key]).replace(",", "")) + int(str(val).replace(",", ""))
 
+					
 					writer.writerow([parkName] + dateVals)
 					
 			summedDateVals = []			
