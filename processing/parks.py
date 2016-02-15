@@ -35,6 +35,12 @@ class ProcessParkData:
 		tentDataDirPath = "../data/national_parks/raw/tent_campers"
 		tentDestFilePath = "../data/national_parks/processed/tent_campers_combined.csv"
 		
+		rvDataDirPath = "../data/national_parks/raw/rv_campers"
+		rvDestFilePath = "../data/national_parks/processed/rv_campers_combined.csv"
+		
+		recVisitorsDataDirPath = "../data/national_parks/raw/recreation_visitors"
+		recVisitorsDestFilePath = "../data/national_parks/processed/recreation_visitors_combined.csv"
+		
 		self.nationalParkCache = []
 		
 		self.getFiles(backcountryDataDirPath)
@@ -42,6 +48,12 @@ class ProcessParkData:
 		
 		self.getFiles(tentDataDirPath)
 		self.writeCombinedFile(tentDestFilePath)
+		
+		self.getFiles(rvDataDirPath)
+		self.writeCombinedFile(rvDestFilePath)
+		
+		self.getFiles(recVisitorsDataDirPath)
+		self.writeCombinedFile(recVisitorsDestFilePath)
 	
 	def getNationalParkCache(self):
 		return self.nationalParkCache
