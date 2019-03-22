@@ -10,3 +10,6 @@ Data (/data/national_parks) sourced from
 
 Visualizations:
 * https://plot.ly/~jmapping/14#plot
+* https://plot.ly/~jmapping/36
+* https://plot.ly/~jmapping/38
+* https://plot.ly/~jmapping/24
