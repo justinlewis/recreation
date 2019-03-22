@@ -9,4 +9,4 @@ Data (/data/national_parks) sourced from
 * U.S. Population: http://www.multpl.com/united-states-population/table
 
 Visualizations:
-* https://plot.ly/~jmapping/14/national-park-back-country-campers-1979-2014/
+* https://plot.ly/~jmapping/14#plot
